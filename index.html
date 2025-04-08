@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Puzzle</title>
+<style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #2c3e50;
+        }
+        
+        .puzzle-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin: 50px auto;
+        }
+
+        .puzzle-piece {
+            position: absolute;
+            background-size: 800px 600px;
+            transition: all 30s linear;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+</style>
+  </head>
+  <body>
+    <div class="puzzle-container" id="puzzleContainer"></div>
+
+<script>
+        const imageUrl = 'لینک_عکس_خود_را_اینجا_قرار_دهید'; // از مرحله ۱ دریافت کنید
+        
+        // تنظیمات پازل
+        const config = {
+            rows: 10,    // تعداد قطعات عمودی
+            cols: 15,    // تعداد قطعات افقی
+            width: 800,  // عرض کلی تصویر
+            height: 600 // ارتفاع کلی تصویر
+        };
+
+        function createPuzzle() {
+            const container = document.getElementById('puzzleContainer');
+            
+            // ایجاد قطعات پازل
+            for(let row = 0; row < config.rows; row++) {
+                for(let col = 0; col < config.cols; col++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'puzzle-piece';
+                    
+                    // محاسبه اندازه قطعات
+                    const pieceWidth = config.width / config.cols;
+                    const pieceHeight = config.height / config.rows;
+                    
+                    // تنظیم موقعیت اصلی
+                    const originalX = col * pieceWidth;
+                    const originalY = row * pieceHeight;
+                    
+                    // تنظیم موقعیت تصادفی اولیه
+                    const randomX = Math.random() * window.innerWidth;
+                    const randomY = Math.random() * window.innerHeight;
+                    
+                    // تنظیم استایل
+                    Object.assign(piece.style, {
+                        width: `${pieceWidth}px`,
+                        height: `${pieceHeight}px`,
+                        backgroundImage: `url(${imageUrl})`,
+                        backgroundPosition: `-${originalX}px -${originalY}px`,
+                        left: `${randomX}px`,
+                        top: `${randomY}px`,
+                        opacity: '0'
+                    });
+
+                    container.appendChild(piece);
+
+                    // فعال کردن انیمیشن با تاخیر
+                    setTimeout(() => {
+                        Object.assign(piece.style, {
+                            left: `${originalX}px`,
+                            top: `${originalY}px`,
+                            opacity: '1'
+                        });
+                    }, 100);
+                }
+            }
+        }
+
+        // شروع پس از بارگذاری صفحه
+        window.addEventListener('load', createPuzzle);
+</script>
+  </body>
+</html>
